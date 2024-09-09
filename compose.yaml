@@ -25,7 +25,7 @@ services:
 
   elt_script:
     build:
-      context: ./elt_script
+      context: ./elt
       dockerfile: Dockerfile
     command: ["python", "elt_script.py"]
     networks:
