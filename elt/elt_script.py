@@ -45,7 +45,7 @@ destination_config = {
 dump_command = [
     'pg_dump',
     '-h', source_config['host'],
-    '-u', source_config['user'],
+    '-U', source_config['user'],
     '-d', source_config['dbname'],
     '-f', 'data_dump.sql',
     '-w'
@@ -58,7 +58,7 @@ subprocess.run(dump_command, env=subprocess_env, check=True)
 load_command = [
     'psql',
     '-h', destination_config['host'],
-    '-u', destination_config['user'],
+    '-U', destination_config['user'],
     '-d', destination_config['dbname'],
     '-a', '-f', 'data_dump.sql',
 ]
