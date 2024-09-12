@@ -41,7 +41,7 @@ models:
           - not_null
       - name: name
         description: "First name of the actor."
-        tests:
+        tests: []
 
 
   - name: film_actors
