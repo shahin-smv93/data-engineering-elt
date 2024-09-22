@@ -82,9 +82,9 @@ services:
     networks:
       - elt_network
     environment:
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgres+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
     command: >
-      bash -c "airflow db init &&
+      bash -c "airflow db migrate &&
                airflow users create --username airflow --password password --firstname Shahin --lastname Masoumi --role Admin --email shahinmasoumi93@gmail.com"
 
   webserver:
@@ -94,6 +94,7 @@ services:
     user: root
     depends_on:
       - postgres
+      - init-airflow
     networks:
       - elt_network
     extra_hosts:
@@ -107,7 +108,7 @@ services:
     environment:
       LOAD_EX: n
       EXECUTOR: Local
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgres+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CORE__FERNET_KEY: VA-Bjc8GFf-kZjtG2hCK9Z3FrfbBZrmJySFCfbKYb8Q=
       AIRFLOW__WEBSERVER__DEFAULT__USER_USERNAME: airflow
       AIRFLOW__WEBSERVER__DEFAULT__USER_PASSWORD: password
@@ -146,7 +147,7 @@ services:
       AIRFLOW_WWW_USER_PASSWORD: password
       AIRFLOW__WEBSERVER__SECRET_KEY: secret
     ports:
-      - "8080:8080"
+      - "8081:8080"
     command: scheduler
 
 

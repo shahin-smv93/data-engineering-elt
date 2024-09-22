@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from docker.types import Mount
-from airflow.operators.python_operators import PythonOperator
+from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-from airflow.operators.docker import DockerOperator
+from airflow.providers.docker.operators.docker import DockerOperator
 import subprocess
 
 default_args = {
@@ -55,14 +55,14 @@ t2 = DockerOperator(
         "--profiles-dir",
         "/root",
         "--project-dir",
-        "/dbt"
+        "/opt/dbt"
     ],
     auto_remove=True,
     docker_url="unix://var/run/docker.sock",
     network_mode="bridge",
     mounts=[
         Mount(source='/home/shahin/elt_project/custom_postgres',
-              target='/dbt', type='bind'),
+              target='/opt/dbt', type='bind'),
         Mount(source='/home/shahin/.dbt',
               target='/root', type='bind')
     ],
