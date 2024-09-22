@@ -23,48 +23,48 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
 
-  elt_script:
-    build:
-      context: ./elt
-      dockerfile: Dockerfile
-    command: ["python", "elt_script.py"]
-    networks:
-      - elt_network
-    depends_on:
-      - source_postgres
-      - destination_postgres
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+  # elt_script:
+  #   build:
+  #     context: ./elt
+  #     dockerfile: Dockerfile
+  #   command: ["python", "elt_script.py"]
+  #   networks:
+  #     - elt_network
+  #   depends_on:
+  #     - source_postgres
+  #     - destination_postgres
+  #   healthcheck:
+  #     test: ["CMD", "pg_isready", "-U", "postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 10s
   
-  dbt:
-    image: ghcr.io/dbt-labs/dbt-postgres:1.7.2
-    build: .
-    tty: true
-    stdin_open: true
-    command: 
-      [
-        "run",
-        "--profiles-dir",
-        "/root",
-        "--project-dir",
-        "/dbt",
-        #"--full-refresh"
-      ]
-    networks:
-      - elt_network
-    volumes:
-      - ./custom_postgres:/dbt
-      - ~/.dbt:/root
-    depends_on:
-      elt_script:
-        condition: service_completed_successfully
-    environment:
-      DBT_PROFILE: default
-      DBT_TARGET: dev
+  # dbt:
+  #   image: ghcr.io/dbt-labs/dbt-postgres:1.7.2
+  #   build: .
+  #   tty: true
+  #   stdin_open: true
+  #   command: 
+  #     [
+  #       "run",
+  #       "--profiles-dir",
+  #       "/root",
+  #       "--project-dir",
+  #       "/dbt",
+  #       #"--full-refresh"
+  #     ]
+  #   networks:
+  #     - elt_network
+  #   volumes:
+  #     - ./custom_postgres:/dbt
+  #     - ~/.dbt:/root
+  #   depends_on:
+  #     elt_script:
+  #       condition: service_completed_successfully
+  #   environment:
+  #     DBT_PROFILE: default
+  #     DBT_TARGET: dev
   
   postgres:
     image: postgres:latest
