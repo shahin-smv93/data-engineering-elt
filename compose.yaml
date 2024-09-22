@@ -147,7 +147,7 @@ services:
       AIRFLOW__WEBSERVER__SECRET_KEY: secret
     ports:
       - "8080:8080"
-    command: webserver
+    command: scheduler
 
 
 
