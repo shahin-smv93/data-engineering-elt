@@ -71,8 +71,8 @@ services:
     networks:
       - elt_network
     environment:
-      POSTGRESS_USER: airflow
-      POSTGRESS_PASSWORD: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
   
   init-airflow:
