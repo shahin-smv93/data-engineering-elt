@@ -91,7 +91,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    user: root
     depends_on:
       - postgres
       - init-airflow
@@ -123,7 +122,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    user: root
     depends_on:
       - postgres
     networks:
